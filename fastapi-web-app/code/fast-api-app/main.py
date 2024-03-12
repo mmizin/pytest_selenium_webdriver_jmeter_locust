@@ -1,27 +1,31 @@
 import fastapi
-import uvicorn
 import fastapi_chameleon
+import uvicorn
+from starlette.staticfiles import StaticFiles
 
-from views import home, account, packages
+from views import account
+from views import home
+from views import packages
 
 app = fastapi.FastAPI()
 
 
 def main():
-    configure()
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    configure(dev_mode=True)
+    uvicorn.run(app, host='127.0.0.1', port=8000)
 
 
-def configure():
+def configure(dev_mode: bool):
+    configure_templates(dev_mode)
     configure_routes()
-    configure_templates()
 
 
-def configure_templates():
-    fastapi_chameleon.global_init('templates')
+def configure_templates(dev_mode: bool):
+    fastapi_chameleon.global_init('templates', auto_reload=dev_mode)
 
 
 def configure_routes():
+    app.mount('/static', StaticFiles(directory='static'), name='static')
     app.include_router(home.router)
     app.include_router(account.router)
     app.include_router(packages.router)
@@ -30,4 +34,4 @@ def configure_routes():
 if __name__ == '__main__':
     main()
 else:
-    configure()
+    configure(dev_mode=False)

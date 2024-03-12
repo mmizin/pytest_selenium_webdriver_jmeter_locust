@@ -1,25 +1,31 @@
 import fastapi
+from starlette.requests import Request
 
-from fastapi_chameleon import template
+from viewmodels.account.account_viewmodel import AccountViewModel
+from viewmodels.account.login_viewmodel import LoginViewModel
+from viewmodels.account.register_viewmodel import RegisterViewModel
 
 router = fastapi.APIRouter()
 
 
 @router.get('/account')
-def account():
-    return {}
+def index(request: Request):
+    vm = AccountViewModel(request)
+    return vm.to_dict()
 
 
-@router.get('/register')
-def register():
-    return {}
+@router.get('/account/register')
+def register(request: Request):
+    vm = RegisterViewModel(request)
+    return vm.to_dict()
 
 
-@router.get('/login')
-def login():
-    return {}
+@router.get('/account/login')
+def login(request: Request):
+    vm = LoginViewModel(request)
+    return vm.to_dict()
 
 
-@router.get('/logout')
-def logout():
+@router.get('/account/logout')
+def logout(request: Request):
     return {}
