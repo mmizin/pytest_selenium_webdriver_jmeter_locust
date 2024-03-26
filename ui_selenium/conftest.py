@@ -1,7 +1,7 @@
 import pytest
 
 from _pytest.config.argparsing import Parser
-from ui_selenium.utilities.webdrivers import DRIVER_TYPES
+from config import DriverTypes
 
 pytest_plugins = "ui_selenium.plugins.setup"
 
@@ -12,7 +12,7 @@ def pytest_addoption(parser: Parser) -> None:
     parser.addoption(
         "--webdriver",
         action="store",
-        choices=DRIVER_TYPES,
+        choices=DriverTypes.list_items(),
         default="chrome",
         help="driver to run tests against",
     )
