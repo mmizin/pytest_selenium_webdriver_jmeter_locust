@@ -9,7 +9,6 @@ def setup(request) -> tuple[webdriver, str]:
     driver_type = request.config.getoption('--webdriver')
     # url = request.config.getoption('--url')
     driver = get_driver(driver_type)
-
-    yield driver
-    driver.close()
+    request.cls.driver = driver
+    yield
     driver.quit()
